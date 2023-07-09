@@ -12,7 +12,7 @@
     **Вывод:** Парам пам-пам   """
 
 def rythm(poem):
-    vowgels = (lambda x: sum(1 for i in x if i in 'ауоыиэяюёе'))
+    vowgels = (lambda phrase: sum(1 for i in phrase if i in 'ауоыиэяюёе'))
     new_list = []
     for phrase in poem:
        new_list.append(vowgels(phrase))
