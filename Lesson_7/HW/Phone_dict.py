@@ -17,13 +17,23 @@ def read_file():
      
 
 
-def write_file():
-   pass
-
+def add_to_file():
+    surname = input('Enter surname: ').lower().strip()
+    name = input('Enter name: ').lower().strip()
+    patronymic = input('Enter patronymic: ').lower().strip()
+    number = input('Enter number: ').replace('+', "").strip()
+    if number[0] == '7':
+       number = '8' + number[1:]
+    new_contact = surname.capitalize() + ';' + name.capitalize() + ';' + patronymic.capitalize() + ';' + number
+    with open('my_file.txt', 'a',  encoding='utf-8') as f:
+       f.write('\n')
+       f.write(new_contact)
 
 def menu():
     command_menu = int(input("Enter 1 for reading phone number, 2 for writing new number, 3 for changing "))
     if command_menu == 1:
         read_file()
+    if command_menu == 2:
+        add_to_file()
 
 menu()
