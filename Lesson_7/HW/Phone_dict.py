@@ -1,5 +1,5 @@
 def read_file():
-  action = int(input(f'''Enter 1 to show all telephone directory, enter 2 to find Surname, Name, patronymic or number: '''))
+  action = int(input(f'''Enter 1 to show all telephone directory, enter 2 to find Surname, Name, patronymic or number; or print 9 to escape: '''))
   if action == 1:
      with open('my_file.txt', 'r',  encoding='utf-8') as f:
         contacts = f.read()
@@ -10,14 +10,9 @@ def read_file():
         contacts = f.readlines()
         for contact in contacts:
            if find_contact in contact.upper().split(';'):
-              print(*contact.split(';'), end = "")
-           else: 
-              print("There is no this contact: ")
-              next_command = int(input("Enter 1 to ad contact, enter any key to - skip: "))
-              if next_command == 1:
-                 add_to_file()
-              else:
-                 return          
+              print(*contact.split(';'), end = "")     
+  elif action == 9:
+     return
   # another elif - How variant we could add searhing S+N+P, using code from changing.
   #  I think it would be better to split every function into parts
   else: print('Unknown command')
@@ -40,6 +35,8 @@ def add_to_file():
     return
 
 
+
+
 def change_file():
     changing_contact = str(input("Enter contact's information: " )).upper().strip()
     with open('my_file.txt', 'r',  encoding='utf-8') as f:
@@ -48,9 +45,8 @@ def change_file():
           if changing_contact in contacts[_].upper().split(';'):
                print(f'''contacts id: {_}''')
                print(*contacts[_].split(';'))
-          else: print('Not in contacts')
     changing_id = int(input("enter id of the contact you'd like to change: "))
-    changing_command = int(input("enter 0 to change surname, enter 1 to change name, enter 2 to change patronymic, enter 3 to change number, enter 4 to rewrite contact: "))
+    changing_command = int(input("enter 0 to change surname, enter 1 to change name, enter 2 to change patronymic, enter 3 to change number, enter 4 to rewrite contact; or print 9 to escape: : "))
     changed_contact = contacts[changing_id].split(';')
     if changing_command == 0:
        new_surname = str(input('Enter surname: ')).lower().strip() 
@@ -77,6 +73,8 @@ def change_file():
        if new_number[0] == '7':
           new_number = '8' + new_number[1:]
        changed_contact[3] = new_number
+    elif changing_command == 9:
+     return
     else: print("Unknow command")
     changed_contact = ";".join(changed_contact)
     contacts[changing_id] = changed_contact
@@ -84,6 +82,25 @@ def change_file():
        f.writelines(contacts)
     return
 
+
+
+
+def delete_contact():
+      deleting_contact = str(input("Enter contact's information: " )).upper().strip()
+      with open('my_file.txt', 'r',  encoding='utf-8') as f:
+         contacts = f.readlines()
+         for _ in range(len(contacts)):
+            if deleting_contact in contacts[_].upper().split(';'):
+                  print(f'''contacts id: {_}''')
+                  print(*contacts[_].split(';'))
+      deleting_id = int(input("enter id of the contact you'd like to delete: "))
+      new_contacts = [contact for contact in contacts if contact != contacts[deleting_id]]
+      with open('my_file.txt', 'w',  encoding='utf-8') as f:
+         f.writelines(new_contacts)
+      return
+
+
+   
            
            
            
@@ -92,19 +109,20 @@ def change_file():
 
 
 
-
-
-
-
-
-
 def menu():
-    command_menu = int(input("Enter 1 for reading phone number, 2 for adding new number, 3 for changing "))
+    command_menu = int(input("Enter 1 for reading phone number, 2 for adding new number, 3 for changing, 4 for deleting contact; or print 9 to escape: "))
     if command_menu == 1:
         read_file()
     elif command_menu == 2:
         add_to_file()
     elif command_menu == 3:
        change_file()
+    elif command_menu == 4:
+       delete_contact()
+    elif command_menu == 9:
+       return
+    else: print("Unknow command")
+    return
 
-menu()
+if __name__ == '__main__':
+    menu()
